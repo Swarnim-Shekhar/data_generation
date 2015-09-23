@@ -1,6 +1,6 @@
 {
 	"avg_transactions_per_day": {
-					"min": 2,
+					"min": 0,
 					"max": 3
 					 },
 	"date_wt": {"day_of_week": 
@@ -20,8 +20,8 @@
 				"year": {"0": 100, "1": 100, "2": 100, "3": 100}
 				},
 	"categories_wt": {
-					"gas_transport": 175,
-					"grocery_net": 75,
+					"gas_transport": 225,
+					"grocery_net": 50,
 					"grocery_pos": 150,
 					"pharmacy": 130,
 					"misc_net": 75,
@@ -29,9 +29,9 @@
 					"shopping_net": 110,
 					"shopping_pos": 150,
 					"utilities": 80,
-					"entertainment": 80,
+					"entertainment": 90,
 					"food_dining": 100,
-					"health_fitness": 100,
+					"health_fitness": 90,
 					"home": 150,
 					"kids_pets": 135,
 					"personal_care": 125,
@@ -39,10 +39,10 @@
 					},
 	"categories_amt": {
 					"gas_transport": {"mean": 60, "stdev": 15},
-					"grocery_net": {"mean": 40, "stdev": 20},
-					"grocery_pos": {"mean": 50, "stdev": 20},
-					"pharmacy": {"mean": 30, "stdev": 20},
-					"misc_net": {"mean": 50, "stdev": 150},
+					"grocery_net": {"mean": 50, "stdev": 20},
+					"grocery_pos": {"mean": 100, "stdev": 20},
+					"pharmacy": {"mean": 40, "stdev": 20},
+					"misc_net": {"mean": 60, "stdev": 150},
 					"misc_pos":  {"mean": 50, "stdev": 150},
 					"shopping_net": {"mean": 50, "stdev": 300},
 					"shopping_pos": {"mean": 50, "stdev": 300},
@@ -52,7 +52,7 @@
 					"health_fitness": {"mean": 50, "stdev": 50},
 					"home": {"mean": 50, "stdev": 50},
 					"kids_pets": {"mean": 50, "stdev": 50},
-					"personal_care": {"mean": 25, "stdev": 50},
+					"personal_care": {"mean": 45, "stdev": 50},
 					"travel": {"mean": 50, "stdev": 600}
 				},
   	"shopping_time": {

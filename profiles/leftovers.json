@@ -1,6 +1,6 @@
 {
 	"avg_transactions_per_day": {
-					"min": 2,
+					"min": 0,
 					"max": 3
 					 },
 	"date_wt": {"day_of_week": 

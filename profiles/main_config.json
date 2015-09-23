@@ -35,7 +35,7 @@
 				},							
 "young_adults.json": {
 				"gender": ["M","F"],
-				"age": {"min": 24, "max": 29},
+				"age": {"min": 24, "max": 30},
 				"city_pop": {"min": 0, "max": -1}
 				},							
 "millenials.json": {

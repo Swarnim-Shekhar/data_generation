@@ -1,0 +1,1 @@
+python datagen_customer.py 5000 4444 C:\Users\Brandon\git\data_generation\profiles\main_config.json >>C:\Users\Brandon\git\data_generation\data\customers.csv

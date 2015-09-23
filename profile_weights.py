@@ -2,11 +2,13 @@ from __future__  import division
 import json
 import sys
 import datetime
-from datetime import date
+from datetime import date, datetime
 from datetime import timedelta
 import random
 import numpy as np
 from faker import Faker
+import calendar
+import time
 
 class Profile:
     def __init__(self, pro, start, end):
@@ -186,7 +188,7 @@ class Profile:
 
             mins = random.randrange(60)
             secs = random.randrange(60)
-            time_stamp = str(hour) + ":" + str(mins) + ":" + str(secs)
+            time_stamp = str(hour).zfill(2) + ":" + str(mins).zfill(2) + ":" + str(secs).zfill(2)
             return time_stamp
 
     def sample_from(self):
@@ -207,6 +209,7 @@ class Profile:
         output = []
         rand_date = np.random.random(num_trans)
         rand_cat = np.random.random(num_trans)
+
         for i, num in enumerate(rand_date):
             trans_num = fake.md5(raw_output=False)
             chosen_date = self.closest_rand(self.profile['date_wt'], num)
@@ -214,7 +217,10 @@ class Profile:
             chosen_amt = self.sample_amt(chosen_cat)
             chosen_daypart = self.closest_rand(self.profile['shopping_time'], rand_cat[i])
             stamp = self.sample_time(chosen_daypart)
-            output.append('|'.join([str(trans_num), str(chosen_date), str(stamp), str(chosen_cat), str(chosen_amt)]))
+            unix_time = datetime.strptime( str((chosen_date.strftime('%Y-%m-%d') +' '+ stamp)),'%Y-%m-%d %H:%M:%S').timetuple()
+            epoch = str(calendar.timegm((unix_time)))
+
+            output.append('|'.join([str(trans_num), chosen_date.strftime('%Y-%m-%d'), stamp, str(epoch), str(chosen_cat), str(chosen_amt)]))
 
         return output, is_traveling, travel_max
 

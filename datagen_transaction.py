@@ -73,7 +73,7 @@ def get_user_input():
 def create_header(line):
     headers = line.split('|')
     headers[-1] = headers[-1].replace('\n','')
-    headers.extend(['trans_num', 'trans_date', 'trans_time', 'category', 'amt', 'merchant', 'merch_lat', 'merch_long'])
+    headers.extend(['trans_num', 'trans_date', 'trans_time','unix_time', 'category', 'amt', 'merchant', 'merch_lat', 'merch_long'])
     print ''.join([h + '|' for h in headers])[:-1]
     return headers
 
@@ -92,7 +92,7 @@ class Customer:
             ## Get transaction location details to generate appropriate merchant record
             cust_state = cust.attrs['state']
             groups = t.split('|')
-            trans_cat = groups[3]
+            trans_cat = groups[4]
             merch_filtered = merch[merch['category'] == trans_cat]
             random_row = merch_filtered.ix[random.sample(merch_filtered.index, 1)]
             chosen_merchant = random_row.iloc[0]['merchant_name']
