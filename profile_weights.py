@@ -191,8 +191,8 @@ class Profile:
             time_stamp = str(hour).zfill(2) + ":" + str(mins).zfill(2) + ":" + str(secs).zfill(2)
             return time_stamp
 
-    def sample_from(self):
-
+    #def sample_from(self, inputCat):
+    def sample_from(self, is_fraud):
         fake = Faker()
         # randomly sample number of transactions
         num_trans = int((self.end - self.start).days *
@@ -219,8 +219,9 @@ class Profile:
             stamp = self.sample_time(chosen_daypart)
             unix_time = datetime.strptime( str((chosen_date.strftime('%Y-%m-%d') +' '+ stamp)),'%Y-%m-%d %H:%M:%S').timetuple()
             epoch = str(calendar.timegm((unix_time)))
-
-            output.append('|'.join([str(trans_num), chosen_date.strftime('%Y-%m-%d'), stamp, str(epoch), str(chosen_cat), str(chosen_amt)]))
-
+            #if str(chosen_cat) == inputCat:
+            output.append('|'.join([str(trans_num), chosen_date.strftime('%Y-%m-%d'), stamp, str(epoch), str(chosen_cat), str(chosen_amt), str(is_fraud)]))
+            #else:
+            #    pass
         return output, is_traveling, travel_max
 

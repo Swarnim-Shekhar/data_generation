@@ -10,6 +10,7 @@ from datetime import timedelta
 from datetime import date
 import math
 from random import sample
+from random import randint
 from faker import Faker
 
 
@@ -44,16 +45,26 @@ def get_user_input():
 
     try:
         customers = open(sys.argv[1], 'r').readlines()
-        #customers = open('data/customers.csv', 'r').readlines()
+        #customers = open('/Users/swarnim/PycharmProjects/data_generation/data/customers.csv', 'r').readlines()
+
     except:
         error_msg(1)
     try:
         m = str(sys.argv[2])
-        #m = 'C:/Users/Brandon/git/data_generation/profiles/millenials.json'
-        pro = open(m, 'r').read()
-        #fix for windows file paths
+        #m = '/Users/swarnim/PycharmProjects/data_generation/profiles/female_30_40_smaller_cities.json'
         pro_name = m.split('profiles')[-1]
         pro_name = pro_name[1:]
+        fraud_flag = randint(0,100)
+
+        if fraud_flag < 11:
+            parse_index = m.index('profiles/') + 9
+            m = m[:parse_index] +'fraud_' + m[parse_index:]
+        else:
+            pass
+        #m = 'C:\Users\swarnim\PycharmProjects\data_generation\profiles\male_30_40_bigger_cities_fruad.json'
+        pro = open(m, 'r').read()
+        #fix for windows file paths
+
 
     except:
         error_msg(2)
@@ -68,12 +79,14 @@ def get_user_input():
     except:
         error_msg(4)
 
-    return customers, pro, pro_name, startd, endd
+
+
+    return customers, pro, pro_name, startd, endd, m
 
 def create_header(line):
     headers = line.split('|')
     headers[-1] = headers[-1].replace('\n','')
-    headers.extend(['trans_num', 'trans_date', 'trans_time','unix_time', 'category', 'amt', 'merchant', 'merch_lat', 'merch_long'])
+    headers.extend(['trans_num', 'trans_date', 'trans_time','unix_time', 'category', 'amt', 'is_fraud', 'merchant', 'merch_lat', 'merch_long'])
     print ''.join([h + '|' for h in headers])[:-1]
     return headers
 
@@ -84,8 +97,11 @@ class Customer:
         self.attrs = self.clean_line(self.customer)
 
     def print_trans(self, trans):
+
         is_traveling = trans[1]
         travel_max = trans[2]
+
+
 
         for t in trans[0]:
 
@@ -95,10 +111,12 @@ class Customer:
             trans_cat = groups[4]
             merch_filtered = merch[merch['category'] == trans_cat]
             random_row = merch_filtered.ix[random.sample(merch_filtered.index, 1)]
+            ##sw added list
             chosen_merchant = random_row.iloc[0]['merchant_name']
 
             cust_lat = cust.attrs['lat']
             cust_long = cust.attrs['long']
+
 
             if is_traveling:
                 # hacky math.. assuming ~70 miles per 1 decimal degree of lat/long
@@ -113,7 +131,11 @@ class Customer:
                 rad = 1
                 merch_lat = fake.geo_coordinate(center=float(cust_lat),radius=rad)
                 merch_long = fake.geo_coordinate(center=float(cust_long),radius=rad)
-            print self.customer.replace('\n','') + '|' + t + '|' + str(chosen_merchant) + '|' + str(merch_lat) + '|' + str(merch_long)
+
+            # if cust.attrs['profile'] == "male_30_40_smaller_cities.json":
+                print self.customer.replace('\n','') + '|' + t + '|' + str(chosen_merchant) + '|' + str(merch_lat) + '|' + str(merch_long)
+            #else:
+                # pass
 
     def clean_line(self, line):
         # separate into a list of attrs
@@ -127,22 +149,40 @@ class Customer:
 if __name__ == '__main__':
     # read user input into Inputs object
     # to prepare the user inputs
-    customers, pro, curr_profile, start, end = get_user_input()
+    # curr_profile is female_30_40_smaller_cities.json , for fraud as well as non fraud
+    # profile_name is ./profiles/fraud_female_30_40_bigger_cities.json for fraud.
+    customers, pro, curr_profile, start, end, profile_name = get_user_input()
     profile = profile_weights.Profile(pro, start, end)
+    #if curr_profile == "male_30_40_smaller_cities.json":
+    #   inputCat = "travel"
+    #elif curr_profile == "female_30_40_smaller_cities.json":
+    #    inputCat = "pharmacy"
+    #else:
+    #    inputCat = "misc_net"
 
     # takes the customers headers and appends
     # transaction headers and returns/prints
+    if profile_name[11:][:6] == 'fraud_':
+    # read merchant.csv used for transaction record
+        merch = pd.read_csv('./data/merchants_fraud.csv' , sep='|')
+    else:
+        merch = pd.read_csv('./data/merchants.csv', sep='|')
+
     headers = create_header(customers[0])
 
     # generate Faker object to calc merchant transaction locations
     fake = Faker()
 
-    # read merchant.csv used for transaction record
-    merch = pd.read_csv('demographic_data/merchants.csv' , sep='|')
 
     # for each customer, if the customer fits this profile
     # generate appropriate number of transactions
     for line in customers[1:]:
         cust = Customer(line, profile)
-        if cust.attrs['profile'] == curr_profile:
-            cust.print_trans(profile.sample_from())
+        if cust.attrs['profile'] == curr_profile and profile_name[11:][:6] == 'fraud_':
+            is_fraud = 1
+            cust.print_trans(profile.sample_from(is_fraud))
+        elif cust.attrs['profile'] == curr_profile and profile_name[11:][:6] != 'fraud_':
+            is_fraud= 0
+            cust.print_trans(profile.sample_from(is_fraud))
+        else:
+            pass
