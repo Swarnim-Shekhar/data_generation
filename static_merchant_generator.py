@@ -1,6 +1,6 @@
 ###
 # Generates n merchants per category, to be piped into demographic_data/merchants.csv
-# >python static_merchant_generator.py >> demographic_data/merchants.csv
+# >python static_merchant_generator.py >> ./data/merchants.csv
 ###
 __author__ = 'Brandon Harris - brandonharris.io'
 from faker import Factory
@@ -30,4 +30,4 @@ print header
 
 for c in category_list:
     for _ in range(0, n):
-        print c + "|" + fake.company()
+        print c + "|" + 'fraud_' + fake.company()

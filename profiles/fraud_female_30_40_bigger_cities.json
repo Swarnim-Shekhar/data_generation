@@ -1,7 +1,7 @@
-	{
+{
 	"avg_transactions_per_day": {
-					"min": 0,
-					"max": 3
+					"min": 2,
+					"max": 25
 					 },
 	"date_wt": {"day_of_week": 
 				   {"monday": 80,
@@ -20,46 +20,32 @@
 				"year": {"0": 100, "1": 100, "2": 100, "3": 100}
 				},
 	"categories_wt": {
-					"gas_transport": 150,
-					"grocery_net": 25,
-					"grocery_pos": 150,
-					"pharmacy": 150,
-					"misc_net": 50,
-					"misc_pos":  100,
-					"shopping_net": 75,
-					"shopping_pos": 150,
-					"utilities": 100,
-					"entertainment": 115,
-					"food_dining": 120,
-					"health_fitness": 80,
-					"home": 150,
-					"kids_pets": 150,
-					"personal_care": 120,
-					"travel": 60
+					"utilities": 90,
+					"entertainment": 100
 					},
 	"categories_amt": {
 					"gas_transport": {"mean": 70, "stdev": 15},
-					"grocery_net": {"mean": 50, "stdev": 20},
-					"grocery_pos": {"mean": 140, "stdev": 20},
-					"pharmacy": {"mean": 60, "stdev": 15},
-					"misc_net": {"mean": 55, "stdev": 150},
+					"grocery_net": {"mean": 60, "stdev": 20},
+					"grocery_pos": {"mean": 120, "stdev": 20},
+					"pharmacy": {"mean": 45, "stdev": 20},
+					"misc_net": {"mean": 50, "stdev": 150},
 					"misc_pos":  {"mean": 60, "stdev": 150},
 					"shopping_net": {"mean": 60, "stdev": 300},
 					"shopping_pos": {"mean": 60, "stdev": 300},
-					"utilities": {"mean": 85, "stdev": 25},
-					"entertainment": {"mean": 60, "stdev": 75},
-					"food_dining": {"mean": 60, "stdev": 50},
+					"utilities": {"mean": 260, "stdev": 25},
+					"entertainment": {"mean": 200, "stdev": 75},
+					"food_dining": {"mean": 40, "stdev": 50},
 					"health_fitness": {"mean": 60, "stdev": 50},
 					"home": {"mean": 60, "stdev": 50},
 					"kids_pets": {"mean": 60, "stdev": 50},
-					"personal_care": {"mean": 45, "stdev": 50},
+					"personal_care": {"mean": 55, "stdev": 50},
 					"travel": {"mean": 60, "stdev": 600}
 				},
   	"shopping_time": {
-					"AM": 40,
-					"PM": 60
+					"AM": 30,
+					"PM": 70
 					 },
-	"travel_pct": 45,
-  	"travel_max_dist" : 1000
+	"travel_pct": 25,
+  	"travel_max_dist" : 800
 
 }

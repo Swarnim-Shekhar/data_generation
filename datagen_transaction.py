@@ -54,15 +54,12 @@ def get_user_input():
         #m = '/Users/swarnim/PycharmProjects/data_generation/profiles/female_30_40_smaller_cities.json'
         pro_name = m.split('profiles')[-1]
         pro_name = pro_name[1:]
-        fraud_flag = randint(0,100)
-
-        if fraud_flag < 11:
-            parse_index = m.index('profiles/') + 9
-            m = m[:parse_index] +'fraud_' + m[parse_index:]
-        else:
-            pass
+        parse_index = m.index('profiles/') + 9
+        m_fraud = m[:parse_index] +'fraud_' + m[parse_index:]
         #m = 'C:\Users\swarnim\PycharmProjects\data_generation\profiles\male_30_40_bigger_cities_fruad.json'
         pro = open(m, 'r').read()
+        pro_fraud = open(m_fraud, 'r').read()
+        pro_name_fraud = 'fraud_' + pro_name[1:]
         #fix for windows file paths
 
 
@@ -70,18 +67,18 @@ def get_user_input():
         error_msg(2)
     try:
         startd = convert_date(sys.argv[3])
-        #startd = convert_date('01-01-2015')
+        #startd = convert_date('01-01-2013')
     except:
         error_msg(3)
     try:
         endd = convert_date(sys.argv[4])
-        #endd = convert_date('08-25-2015')
+        #endd = convert_date('12-31-2014')
     except:
         error_msg(4)
 
 
 
-    return customers, pro, pro_name, startd, endd, m
+    return customers, pro, pro_fraud, pro_name, pro_name_fraud, startd, endd, m
 
 def create_header(line):
     headers = line.split('|')
@@ -151,8 +148,7 @@ if __name__ == '__main__':
     # to prepare the user inputs
     # curr_profile is female_30_40_smaller_cities.json , for fraud as well as non fraud
     # profile_name is ./profiles/fraud_female_30_40_bigger_cities.json for fraud.
-    customers, pro, curr_profile, start, end, profile_name = get_user_input()
-    profile = profile_weights.Profile(pro, start, end)
+    customers, pro, pro_fraud, curr_profile, curr_fraud_profile, start, end, profile_name = get_user_input()
     #if curr_profile == "male_30_40_smaller_cities.json":
     #   inputCat = "travel"
     #elif curr_profile == "female_30_40_smaller_cities.json":
@@ -162,11 +158,11 @@ if __name__ == '__main__':
 
     # takes the customers headers and appends
     # transaction headers and returns/prints
-    if profile_name[11:][:6] == 'fraud_':
+    #if profile_name[11:][:6] == 'fraud_':
     # read merchant.csv used for transaction record
-        merch = pd.read_csv('./data/merchants_fraud.csv' , sep='|')
-    else:
-        merch = pd.read_csv('./data/merchants.csv', sep='|')
+    #    merch = pd.read_csv('./data/merchants_fraud.csv' , sep='|')
+    #else:
+    #    merch = pd.read_csv('./data/merchants.csv', sep='|')
 
     headers = create_header(customers[0])
 
@@ -177,12 +173,33 @@ if __name__ == '__main__':
     # for each customer, if the customer fits this profile
     # generate appropriate number of transactions
     for line in customers[1:]:
-        cust = Customer(line, profile)
-        if cust.attrs['profile'] == curr_profile and profile_name[11:][:6] == 'fraud_':
-            is_fraud = 1
-            cust.print_trans(profile.sample_from(is_fraud))
-        elif cust.attrs['profile'] == curr_profile and profile_name[11:][:6] != 'fraud_':
-            is_fraud= 0
-            cust.print_trans(profile.sample_from(is_fraud))
-        else:
-            pass
+            profile = profile_weights.Profile(pro, start, end)
+            cust = Customer(line, profile)
+            if cust.attrs['profile'] == curr_profile:
+                merch = pd.read_csv('./data/merchants.csv', sep='|')
+                is_fraud= 0
+                cust.print_trans(profile.sample_from(is_fraud))
+                fraud_flag = randint(0,100)
+                if fraud_flag < 11:
+                    fraud_interval = randint(1,7)
+                    inter_val = (end-start).days-7
+                    # rand_interval is the random no of days to be added to start date
+                    rand_interval = randint(1, inter_val)
+                    #random start date is selected
+                    newstart = start + datetime.timedelta(days=rand_interval)
+                    # based on the fraud interval , random enddate is selected
+                    newend = newstart + datetime.timedelta(days=fraud_interval)
+                    # we assume that the fraud window can be between 1 to 7 days
+                    profile = profile_weights.Profile(pro_fraud, newstart, newend)
+                    cust = Customer(line, profile)
+                    merch = pd.read_csv('./data/merchants_fraud.csv' , sep='|')
+                    is_fraud = 1
+                    cust.print_trans(profile.sample_from(is_fraud))
+                    #parse_index = m.index('profiles/') + 9
+                    #m = m[:parse_index] +'fraud_' + m[parse_index:]
+                else:
+                    pass
+            else:
+                pass
+
+

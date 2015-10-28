@@ -1,7 +1,7 @@
-	{
+{
 	"avg_transactions_per_day": {
-					"min": 0,
-					"max": 3
+					"min": 2,
+					"max": 15
 					 },
 	"date_wt": {"day_of_week": 
 				   {"monday": 80,
@@ -21,25 +21,11 @@
 				},
 	"categories_wt": {
 					"gas_transport": 150,
-					"grocery_net": 25,
-					"grocery_pos": 150,
-					"pharmacy": 150,
-					"misc_net": 50,
-					"misc_pos":  100,
-					"shopping_net": 75,
-					"shopping_pos": 150,
-					"utilities": 100,
-					"entertainment": 115,
-					"food_dining": 120,
-					"health_fitness": 80,
-					"home": 150,
-					"kids_pets": 150,
-					"personal_care": 120,
-					"travel": 60
+					"grocery_net": 25
 					},
 	"categories_amt": {
-					"gas_transport": {"mean": 70, "stdev": 15},
-					"grocery_net": {"mean": 50, "stdev": 20},
+					"gas_transport": {"mean": 250, "stdev": 15},
+					"grocery_net": {"mean": 170, "stdev": 20},
 					"grocery_pos": {"mean": 140, "stdev": 20},
 					"pharmacy": {"mean": 60, "stdev": 15},
 					"misc_net": {"mean": 55, "stdev": 150},
